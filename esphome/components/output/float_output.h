@@ -58,7 +58,7 @@ class FloatOutput : public BinaryOutput {
    */
   void set_level(float state);
 
-  void set_phase_angle(float angle) {}
+  void update_phase_angle(float angle) {}
 
   /** Set the frequency of the output for PWM outputs.
    *
