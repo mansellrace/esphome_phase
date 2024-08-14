@@ -11,6 +11,8 @@ from esphome.const import (
 
 CODEOWNERS = ["@mansellrace"]
 
+CONF_OVERLAP = "overlap"
+
 h_bridge_cct_ns = cg.esphome_ns.namespace("h_bridge_cct")
 HBridgeCCTLightOutput = h_bridge_cct_ns.class_("HBridgeCCTLightOutput", light.LightOutput)
 
@@ -22,6 +24,7 @@ CONFIG_SCHEMA = cv.All(
             cv.Required(CONF_WARM_WHITE): cv.use_id(output.FloatOutput),
             cv.Optional(CONF_COLD_WHITE_COLOR_TEMPERATURE): cv.color_temperature,
             cv.Optional(CONF_WARM_WHITE_COLOR_TEMPERATURE): cv.color_temperature,
+            cv.Optional(CONF_OVERLAP, default = "5%"): cv.templatable(cv.percentage),
         }
     ),
     cv.has_none_or_all_keys(
@@ -44,3 +47,5 @@ async def to_code(config):
     cg.add(var.set_warm_white(wwhite))
     if warm_white_color_temperature := config.get(CONF_WARM_WHITE_COLOR_TEMPERATURE):
         cg.add(var.set_warm_white_temperature(warm_white_color_temperature))
+
+    cg.add(var.set_overlap(config[CONF_OVERLAP]))
