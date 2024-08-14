@@ -13,7 +13,7 @@ class HBridgeCCTLightOutput : public light::LightOutput {
   void set_warm_white(output::FloatOutput *warm_white) { warm_white_ = warm_white; }
   void set_cold_white_temperature(float cold_white_temperature) { cold_white_temperature_ = cold_white_temperature; }
   void set_warm_white_temperature(float warm_white_temperature) { warm_white_temperature_ = warm_white_temperature; }
-  void set_constant_brightness(bool constant_brightness) { constant_brightness_ = constant_brightness; }
+  void set_overlap(float overlap) { overlap_ = overlap / 2; }
   light::LightTraits get_traits() override {
     auto traits = light::LightTraits();
     traits.set_supported_color_modes({light::ColorMode::COLOR_TEMPERATURE});
@@ -26,9 +26,13 @@ class HBridgeCCTLightOutput : public light::LightOutput {
     float color_temperature, brightness;
     state->current_values_as_ct(&color_temperature, &brightness);
     cwhite = brightness * color_temperature;
-    wwhite = brightness - cwhite - 0.001;
+    wwhite = brightness - cwhite;
     phase = ((1.0 - cwhite - wwhite) * 180.0) + cwhite * 360.0;
     this->warm_white_->update_phase_angle(phase);
+    if (color_temperature > 0 && color_temperature < 1.0) {
+      cwhite -= this->overlap_;
+      wwhite -= this->overlap_;
+    }
     this->cold_white_->set_level(cwhite);
     this->warm_white_->set_level(wwhite);
   }
@@ -38,7 +42,7 @@ class HBridgeCCTLightOutput : public light::LightOutput {
   output::FloatOutput *warm_white_;
   float cold_white_temperature_{0};
   float warm_white_temperature_{0};
-  bool constant_brightness_;
+  float overlap_;
 };
 
 }  // namespace h_bridge_cct
