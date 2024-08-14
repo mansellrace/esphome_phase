@@ -22,14 +22,15 @@ class HBridgeCCTLightOutput : public light::LightOutput {
     return traits;
   }
   void write_state(light::LightState *state) override {
-    float cwhite, wwhite, phase;
+    float cwhite, wwhite, offtime, phase;
     float color_temperature, brightness;
     state->current_values_as_ct(&color_temperature, &brightness);
     cwhite = brightness * color_temperature;
     wwhite = brightness - cwhite;
-    phase = ((1.0 - cwhite - wwhite) * 180.0) + cwhite * 360.0;
+    offtime = 1.0 - cwhite - wwhite;
+    phase = (offtime * 180.0) + cwhite * 360.0;
     this->warm_white_->update_phase_angle(phase);
-    if (color_temperature > 0 && color_temperature < 1.0) {
+    if (offtime < (this->overlap_ * 2) && color_temperature > 0 && color_temperature < 1.0) {
       cwhite -= this->overlap_;
       wwhite -= this->overlap_;
     }
@@ -44,6 +45,3 @@ class HBridgeCCTLightOutput : public light::LightOutput {
   float warm_white_temperature_{0};
   float overlap_;
 };
-
-}  // namespace h_bridge_cct
-}  // namespace esphome
