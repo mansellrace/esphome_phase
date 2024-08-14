@@ -45,3 +45,6 @@ class HBridgeCCTLightOutput : public light::LightOutput {
   float warm_white_temperature_{0};
   float overlap_;
 };
+
+}  // namespace h_bridge_cct
+}  // namespace esphome
