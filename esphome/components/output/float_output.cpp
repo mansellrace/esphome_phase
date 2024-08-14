@@ -40,6 +40,10 @@ void FloatOutput::set_level(float state) {
   this->write_state(state);
 }
 
+void FloatOutput::update_phase_angle(float angle) {
+  this->update_phase_angle(angle);
+}
+
 void FloatOutput::write_state(bool state) { this->set_level(state != this->inverted_ ? 1.0f : 0.0f); }
 
 }  // namespace output
