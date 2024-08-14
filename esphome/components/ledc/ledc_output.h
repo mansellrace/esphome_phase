@@ -22,7 +22,7 @@ class LEDCOutput : public output::FloatOutput, public Component {
   void set_phase_angle(float angle) { this->phase_angle_ = angle; }
   /// Dynamically change frequency at runtime
   void update_frequency(float frequency) override;
-  void update_phase_angle(float angle);
+  void update_phase_angle(float angle) override;
 
   /// Setup LEDC.
   void setup() override;
