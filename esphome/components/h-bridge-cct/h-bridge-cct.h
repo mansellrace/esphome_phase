@@ -26,9 +26,8 @@ class HBridgeCCTLightOutput : public light::LightOutput {
     float color_temperature, brightness;
     state->current_values_as_ct(&color_temperature, &brightness);
     cwhite = brightness * color_temperature;
-    wwhite = brightness - cwhite;
-    phase = cwhite * 180.0;
-    //this->cold_white_->get_max_power();
+    wwhite = brightness - cwhite - 0.001;
+    phase = ((1.0 - cwhite - wwhite) * 180.0) + cwhite * 360.0;
     this->warm_white_->update_phase_angle(phase);
     this->cold_white_->set_level(cwhite);
     this->warm_white_->set_level(wwhite);
