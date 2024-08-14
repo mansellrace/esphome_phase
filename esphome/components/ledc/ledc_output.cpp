@@ -173,7 +173,7 @@ void LEDCOutput::setup() {
 }
 
 void LEDCOutput::dump_config() {
-  ESP_LOGCONFIG(TAG, "LEDC Output TEST:");
+  ESP_LOGCONFIG(TAG, "LEDC Output:");
   LOG_PIN("  Pin ", this->pin_);
   ESP_LOGCONFIG(TAG, "  LEDC Channel: %u", this->channel_);
   ESP_LOGCONFIG(TAG, "  PWM Frequency: %.1f Hz", this->frequency_);
