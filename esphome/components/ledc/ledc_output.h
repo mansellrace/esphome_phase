@@ -19,7 +19,7 @@ class LEDCOutput : public output::FloatOutput, public Component {
 
   void set_channel(uint8_t channel) { this->channel_ = channel; }
   void set_frequency(float frequency) { this->frequency_ = frequency; }
-  void set_phase_angle(float angle) { this->phase_angle_ = angle; }
+  void set_phase_angle(float angle) override { this->phase_angle_ = angle; }
   /// Dynamically change frequency at runtime
   void update_frequency(float frequency) override;
 

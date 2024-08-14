@@ -75,6 +75,8 @@ class FloatOutput : public BinaryOutput {
   /// Get the minimum power output.
   float get_min_power() const;
 
+  void set_phase_angle(float angle) {}
+
  protected:
   /// Implement BinarySensor's write_enabled; this should never be called.
   void write_state(bool state) override;
