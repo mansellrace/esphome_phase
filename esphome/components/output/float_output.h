@@ -57,6 +57,8 @@ class FloatOutput : public BinaryOutput {
    * @param state The new state.
    */
   void set_level(float state);
+  
+  void set_phase_angle(float angle);
 
   /** Set the frequency of the output for PWM outputs.
    *
@@ -75,7 +77,6 @@ class FloatOutput : public BinaryOutput {
   /// Get the minimum power output.
   float get_min_power() const;
 
-  void set_phase_angle(float angle) {}
 
  protected:
   /// Implement BinarySensor's write_enabled; this should never be called.
