@@ -28,7 +28,7 @@ class HBridgeCCTLightOutput : public light::LightOutput {
     cwhite = brightness * color_temperature;
     wwhite = brightness - cwhite;
     offtime = 1.0 - cwhite - wwhite;
-    float maxv = 1.0 - this->overlap_;
+    float maxv = 1.0 - (this->overlap_ * 2.0);
     if (offtime < (this->overlap_ * 2.0) && color_temperature > 0.0 && color_temperature < 1.0) {
       if (cwhite > maxv) {
        cwhite = maxv;
