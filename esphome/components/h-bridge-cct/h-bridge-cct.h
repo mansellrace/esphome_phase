@@ -25,18 +25,15 @@ class HBridgeCCTLightOutput : public light::LightOutput {
     float cwhite, wwhite, offtime, phase;
     float color_temperature, brightness;
     state->current_values_as_ct(&color_temperature, &brightness);
-    cwhite = brightness * color_temperature;
-    wwhite = brightness - cwhite;
-    offtime = 1.0 - cwhite - wwhite;
+
     float maxv = 1.0 - (this->overlap_ * 2.0);
-    if (offtime < (this->overlap_ * 2.0) && color_temperature > 0.0 && color_temperature < 1.0) {
-      if (cwhite > maxv) {
-       cwhite = maxv;
-      }
-      if (wwhite > maxv) {
-       wwhite = maxv;
-      }
+    if (brightness > maxv && color_temperature > 0.0 && color_temperature < 1.0) {
+      brightness = maxv;
     }
+
+    cwhite = brightness * color_temperature;
+    wwhite = brightness * (1.0 - color_temperature);
+    offtime = 1.0 - cwhite - wwhite;
     phase = (offtime * 180.0) + cwhite * 360.0;
     this->warm_white_->update_phase_angle(phase);
     this->cold_white_->set_level(cwhite);
